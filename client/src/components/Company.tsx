@@ -17,7 +17,6 @@ export default function Company({
         })
     }
     function handleRemoveCompany(index:number){
-        console.log(index)
         setCompanyInfo((companyInfo:Object[])=>{
             return companyInfo.filter((_,i)=>i!==index)
         })
@@ -26,7 +25,6 @@ export default function Company({
         if(companyInfo.length<=0){
             handleAddCompany()
             setAddMore(!addMore)
-            console.log(addMore)
         }
     },[companyInfo])
     const updateCompany=(index:number,e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -43,8 +41,6 @@ export default function Company({
             })
         })
     }
-
-    console.log(companyInfo)
 
     return (
         <div className={"w-full text-justify grid grid-cols-1"}>

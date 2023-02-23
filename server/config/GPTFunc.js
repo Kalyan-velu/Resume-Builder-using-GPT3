@@ -40,6 +40,5 @@ const Prompts=async (newEntry,remainderText)=>{
         //👇🏻 put them into an object
         return  { objective,points };
     }
-
 }
 module.exports={GPTFunction,Prompts}

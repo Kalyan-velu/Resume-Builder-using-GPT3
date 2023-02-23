@@ -1,5 +1,5 @@
 const express = require("express");
-
+const path=require("path")
 const {Prompts} = require("../config/GPTFunc");
 const multer = require("multer");
 
@@ -11,7 +11,7 @@ const storage=multer.diskStorage({
         cb(null,'uploads');
     },
     filename:(req,file,cb)=>{
-        cb(null,file.originalname);
+        cb(null,Date.now() + path.extname(file.originalname));
     }
 })
 const upload = multer({
@@ -26,7 +26,7 @@ router.post("/create", upload.single("headshotImage"), async (req, res) => {
 
             const newEntry = {
                 fullName: details.fullName,
-                image_url:`http://localhost:8000/uploads/${req.file.filename}`,
+                image_url:`https://resume-builder.adaptable.app/uploads/${req.file.filename}`,
                 currentPosition: details.currentPosition,
                 // currentTechnologies: details.currentTechnologies,
                 currentExperience: details.currentExperience,
@@ -50,7 +50,7 @@ router.post("/create", upload.single("headshotImage"), async (req, res) => {
         }else{
             const newEntry = {
                 fullName: details.fullName,
-                image_url:`http://localhost:8000/uploads/${req.file.filename}`,
+                image_url:`https://resume-builder.adaptable.app/uploads/${req.file.filename}`,
                 currentPosition: details.currentPosition,
                 currentExperience: details.currentExperience,
                 currentTechnologies: details.currentTechnologies,

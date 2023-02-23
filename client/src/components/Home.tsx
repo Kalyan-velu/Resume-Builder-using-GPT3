@@ -3,8 +3,11 @@ import Company from "./Company";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Loading from "./Loading";
+import {prevStatusType} from "../types/Types";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
-const Home=({setResult}: React.SetStateAction<any>)=>{
+const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
     const navigate=useNavigate()
     const [input,setInput]=React.useState({
         fullName:"",
@@ -21,8 +24,6 @@ const Home=({setResult}: React.SetStateAction<any>)=>{
     const [addMore,setAddMore]=React.useState(false)
     const [headshot, setHeadshot] = React.useState<File>();
     const [loading,setLoading]=React.useState(false)
-    // const [previewImage, setPreviewImage] = React.useState<String>("");
-    // const [imageInfos, setImageInfos] = React.useState<Array<IFile>>([]);
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name,value}=e.target
@@ -40,7 +41,6 @@ const Home=({setResult}: React.SetStateAction<any>)=>{
         setHeadshot(selectedFile?.[0]);
     }
 
-
     function handleFormSubmit(e:React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         setLoading(true);
@@ -52,7 +52,7 @@ const Home=({setResult}: React.SetStateAction<any>)=>{
         }
         // @ts-ignore
         formData.append("headshotImage",headshot,headshot?.name)
-        axios.post("http://localhost:8000/api/resume/create", formData)
+        axios.post("/api/resume/create", formData)
             .then((res) => {
                 if (res.data.message) {
                     setResult(res.data.data);
@@ -62,12 +62,17 @@ const Home=({setResult}: React.SetStateAction<any>)=>{
             })
             .catch((err) => {
                     setLoading(false);
+                    setStatus("Something Went Wrong")
+                    setTimeout(()=>{
+                        setStatus("")
+                    },3000)
                     console.error(err)
                 }
             );
 
             // console.log(loading)
     }
+
     return(
         <div className="top-0 sm:w-full md:w-[60%] m-auto">
             <blockquote className="text-2xl font-semibold italic text-center text-slate-900 m-5 mb-10">

@@ -22,7 +22,7 @@ import {useRef} from "react";
         onAfterPrint: () => alert("Print Successful!"),
     })
     console.log(result);
-    return (
+     return (
         <>
             <button onClick={handlePrint}>Print Page</button>
             <main ref={componentRef} className='h-content m-auto bg-[#e8e2e2] w-[80%] mt-5 text-justify'>
@@ -57,7 +57,9 @@ import {useRef} from "react";
                             className='text-justify'
                         />
                     </div>
-                    <div>
+                    {result?.workExperience===undefined?null:
+                        <>
+                        <div>
                         <h2 className='mb-1 font-semibold text-xl text-justify'>WORK HISTORY</h2>
                         {result?.workExperience?.map((work) => (
                             <p className='text-justify' key={work.companyName}>
@@ -75,6 +77,8 @@ import {useRef} from "react";
                             className='mb-1 text-justify'
                         />
                     </div>
+                    </>
+                    }
                     <div>
                         <h2 className='mb-1 font-semibold text-xl'>JOB RESPONSIBILITIES</h2>
                         <p

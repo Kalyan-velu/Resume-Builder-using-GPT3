@@ -28,3 +28,7 @@ export type ResumeProps ={
             companyExperience:number,
         }[],
 }
+export type prevStatusType={
+    error:string,
+    message:string
+}
