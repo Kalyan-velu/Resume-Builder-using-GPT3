@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node server/index.js",
-    "build": "npm install && cd client && npm install && npm run build && cd .. && npm start",
+    "build": "npm install && cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
