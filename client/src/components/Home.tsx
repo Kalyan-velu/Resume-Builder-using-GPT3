@@ -3,9 +3,6 @@ import Company from "./Company";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Loading from "./Loading";
-import {prevStatusType} from "../types/Types";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
     const navigate=useNavigate()
@@ -22,7 +19,8 @@ const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
         companyExperience:0,
     }])
     const [addMore,setAddMore]=React.useState(false)
-    const [headshot, setHeadshot] = React.useState<File>();
+    const [headshot, setHeadshot] = React.useState<null | string>(null);
+
     const [loading,setLoading]=React.useState(false)
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
@@ -36,22 +34,25 @@ const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
     }
 
     function selectImage(e:React.ChangeEvent<HTMLInputElement>) {
-        const selectedFile = e.target.files as FileList;
-        //set image with a type in typescript
-        setHeadshot(selectedFile?.[0]);
+        const file = e.target.files as FileList;
+        const Reader = new FileReader();
+        Reader.readAsDataURL(file[0]);
+        Reader.onload = () => {
+            if (Reader.readyState=== 2){
+                setHeadshot(Reader.result as string);
+            }
+        };
     }
 
     function handleFormSubmit(e:React.FormEvent<HTMLFormElement>){
         e.preventDefault()
         setLoading(true);
-        const formData=new FormData()
-        formData.append("details",JSON.stringify(input))
-
-        if(addMore){
-            formData.append("work_experience",JSON.stringify(companyInfo))
+        const formData={
+            details:input,
+            work_experience:companyInfo,
+            image:headshot
         }
-        // @ts-ignore
-        formData.append("headshotImage",headshot,headshot?.name)
+        console.log(formData)
         axios.post("/api/resume/create", formData)
             .then((res) => {
                 if (res.data.message) {
@@ -73,6 +74,7 @@ const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
             // console.log(loading)
     }
 
+    // @ts-ignore
     return(
         <div className="top-0 sm:w-full md:w-[60%] m-auto">
             <blockquote className="text-2xl font-semibold italic text-center text-slate-900 m-5 mb-10">
@@ -89,7 +91,7 @@ const Home=({setStatus,setResult}: React.SetStateAction<any>)=>{
                     <div className="shrink-0">
                         <img className="h-16 w-16 object-cover rounded-full"
 
-                             src={headshot ? URL.createObjectURL(headshot) : "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"}
+                             src={headshot ? headshot : "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"}
                              alt="Current profile photo"/>
                     </div>
                     <label className="block">

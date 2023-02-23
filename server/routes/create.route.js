@@ -1,34 +1,37 @@
 const express = require("express");
-const path=require("path")
 const {Prompts} = require("../config/GPTFunc");
 const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+
 
 const router = express.Router();
 
 // store the file in the uploads folder
 const storage=multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null,'uploads');
-    },
     filename:(req,file,cb)=>{
-        cb(null,Date.now() + path.extname(file.originalname));
+        cb(null,Date.now() + file.fieldname + "-" + Date.now());
     }
 })
 const upload = multer({
-    storage: storage,
+    storage,
     limits: { fileSize: 1024 * 1024 * 5 },
 });
-router.post("/create", upload.single("headshotImage"), async (req, res) => {
+router.post("/create", async (req, res) => {
     try{
-        const details=JSON.parse(req.body.details); //convert string to JSON
+        const {details}=req.body; //convert string to JSON
+        console.log(details)
+        let myCloud = await cloudinary.uploader.upload(req.body.image,{
+                folder: "resume_images",
+                quality: "50",
+        });
+        console.log(req.body.image)
         if(req.body.work_experience){
-            const experience=JSON.parse(req.body.work_experience); //convert string to JSON
+            const {experience}=req.body; //convert string to JSON
 
             const newEntry = {
-                fullName: details.fullName,
-                image_url:`https://resume-builder.adaptable.app/uploads/${req.file.filename}`,
+                fullName: details?.fullName,
+                image_url:myCloud?.secure_url,
                 currentPosition: details.currentPosition,
-                // currentTechnologies: details.currentTechnologies,
                 currentExperience: details.currentExperience,
                 currentTechnologies: details.currentTechnologies,
                 workExperience: experience,
@@ -50,7 +53,7 @@ router.post("/create", upload.single("headshotImage"), async (req, res) => {
         }else{
             const newEntry = {
                 fullName: details.fullName,
-                image_url:`https://resume-builder.adaptable.app/uploads/${req.file.filename}`,
+                image_url:myCloud?.secure_url,
                 currentPosition: details.currentPosition,
                 currentExperience: details.currentExperience,
                 currentTechnologies: details.currentTechnologies,
@@ -64,12 +67,13 @@ router.post("/create", upload.single("headshotImage"), async (req, res) => {
             })
         }
     }catch (e) {
+        console.log(e)
         res.status(408).json({
             success:false,
             message:e.message,
         })
     }
 
-});
+})
 
 module.exports = router;
