@@ -23,10 +23,10 @@ import {useRef} from "react";
     })
     console.log(result);
      return (
-        <>
-            <button onClick={handlePrint}>Print Page</button>
-            <main ref={componentRef} className='h-content m-auto bg-[#e8e2e2] w-[80%] mt-5 text-justify'>
-                <header className='flex bg-[#e8e2e2] items-center justify-between w-[80%] m-auto mt-1.5 m-h-10vh p-3 rounded-sm'>
+        <div className={"grid grid-cols-1"}>
+            <button className={"px-4 py-2 text-sm font-medium text-white bg-pink-500 rounded-md hover:bg-pink-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-pink-500"} onClick={handlePrint}>Print Page</button>
+            <main ref={componentRef} className='h-content m-auto bg-[#e8e2e2] sm:w-[100%] md:w-[80%] mt-5 text-justify'>
+                <header className='flex bg-[#e8e2e2] items-center justify-between sm:w-[100%] md:w-[80%] m-auto mt-1.5 m-h-10vh p-3 rounded-sm'>
                     <div>
                         <h1>{result?.fullName}</h1>
                         <p className='opacity-60 mb-3'>
@@ -90,7 +90,7 @@ import {useRef} from "react";
                     </div>
                 </div>
             </main>
-        </>
+        </div>
     );
 };
  export default Resume;
