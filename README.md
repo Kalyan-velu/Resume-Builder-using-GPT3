@@ -1,5 +1,5 @@
 # [Resume-Builder-using-GPT3](https://resume-builder-kamh.onrender.com)
-[![Deploy](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[View Live Site](https://resume-builder-kamh.onrender.com)
 
 This is a simple resume builder using GPT-3.
 It is built using [React.js](https://react.org/), [Tailwind CSS](https://tailwindcss.com/),
@@ -42,6 +42,8 @@ yarn start
 ```
 
 ## Deployment
+
+[![Deploy](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 1. Create a new [Render](https://render.com/) service
 2. Add the following environment variables
