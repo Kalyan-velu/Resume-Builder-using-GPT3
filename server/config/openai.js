@@ -1,8 +1,8 @@
-const { Configuration, OpenAIApi } = require("openai");
-require("dotenv/config");
-const configuration = new Configuration({
-    apiKey:process.env.OPENAI_API_KEY
-});
-const openai = new OpenAIApi(configuration);
+//@ts-check
+const OpenAIApi = require("openai")
+require("dotenv/config")
+const openai = new OpenAIApi({
+    apiKey: process.env.OPENAI_API_KEY
+})
 
-module.exports={openai}
+module.exports = { openai }
